@@ -14,7 +14,10 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@pdf-generation/constants": ["libs/constants/src/index.ts"],
+      "@pdf-generation/pdf-doc": ["libs/pdf-doc/src/index.ts"]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }
