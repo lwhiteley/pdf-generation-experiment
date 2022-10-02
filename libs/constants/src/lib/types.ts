@@ -1,3 +1,5 @@
+import { PDFOptions } from 'puppeteer';
+
 export interface PDFMetadata {
   title: string;
   subject: string;
@@ -7,14 +9,23 @@ export interface PDFMetadata {
 }
 
 export interface Font {
+  familyDisplay: string;
   family: string;
-  name: string;
-  src?: string | null;
+  fontFaces?: {
+    style?: string;
+    weight?: number;
+    format?: string;
+    src: string;
+  }[];
 }
 
-export interface PdfData<T> {
+export interface PDFData {
   id: string | number;
   metadata: PDFMetadata;
+  options?: PDFOptions;
   font: Font;
+}
+
+export interface PDFDocumentData<T> extends PDFData {
   document: T;
 }

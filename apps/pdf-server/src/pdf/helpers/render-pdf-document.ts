@@ -1,16 +1,29 @@
-export const renderPdfDocument = (data, body: string) => {
-  // specifically assuming google fonts setup
-  // can be made more flexible
-  const fontLink = data.font.src
-    ? `
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="${data.font.src}"
-      rel="stylesheet"
-    />
-  `
-    : '';
+import { Font, PDFData } from '@pdf-generation/constants';
+
+const renderFontFaces = (font: Font) => {
+  return (
+    font?.fontFaces?.map((fontFace) => {
+      const family = font.family ? `font-family: ${font.family};` : '';
+      const style = fontFace.style ? `font-style: ${fontFace.style};` : '';
+      const weight = fontFace.weight ? `font-weight: ${fontFace.weight};` : '';
+      const format = fontFace.format ? `format(${fontFace.format})` : '';
+
+      return `
+        @font-face {
+          ${family}
+          ${style}
+          ${weight}
+          src: url(${fontFace.src}) ${format};
+          
+        }
+      `;
+    }) || ''
+  );
+};
+
+export const renderPdfDocument = (data: PDFData, body: string) => {
+  const font = renderFontFaces(data.font);
+
   return `
     <html>
       <head>
@@ -18,11 +31,9 @@ export const renderPdfDocument = (data, body: string) => {
         <title>${data.metadata.title}</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-        ${fontLink}
-        
         <style>
+            ${font}
             body {
-                font-family:${data.font.family};
                 -webkit-print-color-adjust: exact !important;
                 color-adjust: exact !important;
                 print-color-adjust: exact !important;

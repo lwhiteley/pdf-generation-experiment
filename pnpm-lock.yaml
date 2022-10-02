@@ -6,6 +6,7 @@ specifiers:
   '@chakra-ui/icons': ^2.0.10
   '@chakra-ui/react': ^2.3.4
   '@chakra-ui/storybook-addon': ^4.0.11
+  '@chakra-ui/styled-system': ^2.3.3
   '@emotion/babel-plugin': 11.10.2
   '@emotion/react': ^11.10.4
   '@emotion/styled': ^11.10.4
@@ -76,6 +77,7 @@ dependencies:
   '@babel/core': 7.12.13
   '@chakra-ui/icons': 2.0.10_qyhx7yrz3t2iljwu733tbtkrie
   '@chakra-ui/react': 2.3.4_csileceu6xon6cmg4owuvxk2cm
+  '@chakra-ui/styled-system': 2.3.3
   '@emotion/react': 11.10.4_3zdgn2kvkaige6x33e2y3t2tea
   '@emotion/styled': 11.10.4_3r4sohppir7ehkyi4jbv2aktxm
   '@nestjs/common': 9.1.2_yzt46al3aifnexifjjdb4dxxja

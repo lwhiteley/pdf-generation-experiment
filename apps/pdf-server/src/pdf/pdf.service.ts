@@ -2,38 +2,39 @@ import { Injectable } from '@nestjs/common';
 import * as puppeteer from 'puppeteer';
 import { writeFile } from 'fs/promises';
 
-import { renderPdfDocument } from './helpers/render-pdf-document';
+import { PDFDocumentData } from '@pdf-generation/constants';
+import { PdfDocProps, renderPdfDoc } from '@pdf-generation/pdf-doc';
 import { environment } from '../environments/environment';
-import { setPdfMetadata } from './helpers/set-pdf-metadata';
+import { renderPdfDocument, setPdfMetadata, DEFAULT_PDF_FONT } from './helpers';
 
 @Injectable()
 export class PdfService {
-  async generatePdf(data) {
+  async generatePdf(data: PDFDocumentData<PdfDocProps>) {
     const browser = await puppeteer.launch({
+      /**
+       * Adding `--no-sandbox` here is for easier deployment. Please see puppeteer docs about
+       * this argument and why you may not want to use it.
+       */
       args: [`--no-sandbox`],
     });
-    const page = await browser.newPage();
 
     const pdfData = {
       ...data,
-      font: data.font ?? {
-        src: 'https://fonts.googleapis.com/css2?family=Open+Sans:wght@100,200,300,400;600;700&display=swap',
-        name: 'Open Sans',
-        family: 'Open Sans, sans-serif',
-      },
+      font: data.font ?? DEFAULT_PDF_FONT,
     };
 
-    const documentBody = 'test';
+    const documentBody = renderPdfDoc(pdfData.document, pdfData.font);
     const content = renderPdfDocument(pdfData, documentBody);
-
     const pdfOptions = pdfData?.options || {};
 
+    const page = await browser.newPage();
     await page.setContent(content, {
       waitUntil: 'networkidle2',
     });
     const pdf = await page.pdf({
       format: 'a4',
       printBackground: true,
+      preferCSSPageSize: true,
       ...pdfOptions,
       margin: {
         left: '40px',
@@ -44,18 +45,20 @@ export class PdfService {
       },
     });
 
-    await browser.close();
-
     // Give the buffer to pdf-lib
     const result = await setPdfMetadata(pdf, pdfData?.metadata);
 
     // write to disk for debugging
     if (!environment.production) {
-      const filePath = `${environment.tmpFolder}/${
-        pdfData.id || 'tmp-file'
-      }.pdf`;
+      const now = Date.now();
+      const filePath = `${environment.tmpFolder}/${now}-tmp-file.pdf`;
+      await page.screenshot({
+        fullPage: true,
+        path: `${environment.tmpFolder}/${now}-tmp-file.png`,
+      });
       await writeFile(filePath, result);
     }
+    await browser.close();
 
     return result;
   }
