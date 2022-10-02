@@ -54,6 +54,7 @@
       "configurations": {
         "development": {
           "buildTarget": "ui-app:build:development",
+          "proxyConfig": "apps/ui-app/proxy.config.json",
           "open": true
         },
         "production": {
