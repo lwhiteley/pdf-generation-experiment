@@ -1,3 +1,7 @@
+/**
+ * We import dependencies that are missed by nx auto package.json creation
+ */
+
 import '@babel/core';
 import '@emotion/styled';
 import '@chakra-ui/styled-system';

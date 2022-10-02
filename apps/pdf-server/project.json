@@ -13,7 +13,8 @@
         "outputPath": "dist/apps/pdf-server",
         "main": "apps/pdf-server/src/main.ts",
         "tsConfig": "apps/pdf-server/tsconfig.app.json",
-        "assets": ["apps/pdf-server/src/assets"]
+        "assets": ["apps/pdf-server/src/assets"],
+        "generatePackageJson": true
       },
       "configurations": {
         "production": {
