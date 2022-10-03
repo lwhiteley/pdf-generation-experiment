@@ -8,8 +8,7 @@ import { renderToString } from 'react-dom/server';
 import { PdfDoc, PdfDocProps } from './pdf-doc';
 
 export const renderPdfDoc = (data: PdfDocProps, font?: Font) => {
-  const fontFamilyDisplay =
-    font?.familyDisplay || font?.family || chakraTheme.fonts.body;
+  const fontFamilyDisplay = font?.familyDisplay || font?.family;
 
   return renderToString(
     <ChakraProvider
