@@ -15,7 +15,7 @@ export interface PdfDocProps {
 export function PdfDoc(props: PdfDocProps) {
   const { title, description, images } = props;
   return (
-    <Stack spacing={6} fontSize="md">
+    <Stack display="block" spacing={6} fontSize="md">
       <Heading as="h1" size="4xl" color="blue.800">
         {title}
       </Heading>

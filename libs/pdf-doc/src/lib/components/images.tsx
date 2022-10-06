@@ -17,12 +17,19 @@ export const Images = ({ items: images }: ImagesProps) => {
       }}
     >
       <Wrap spacing={10}>
-        {images.map(({ id, url }) => {
+        {[...images, ...images].map(({ id, url }) => {
           if (!url) return null;
 
           return (
             <Box key={id}>
               <Image
+                sx={{
+                  pageBreakInside: 'avoid',
+                  '@media print': {
+                    pageBreakInside: 'avoid',
+                  },
+                }}
+                display="block"
                 src={url}
                 width="157px"
                 height="104px"
